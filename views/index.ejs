@@ -23,13 +23,25 @@
   <script>
     var socket = io();
     $('form').submit(function(){
-      socket.emit('chat message', $('#m').val());
-      $('#m').val('');
+      send();
       return false;
     });
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
+
+    $('#m').keypress(function (e) {
+     var key = e.which;
+     if(key == 13) {
+       send();
+     }
+});
+
+    var send = function(){
+      socket.emit('chat message', $('#m').val());
+      $('#m').val('');
+    }
+
   </script>
 </body>
 </html>
