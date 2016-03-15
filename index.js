@@ -1,12 +1,13 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-var http = require('http').Server(app);
+// {
+//   transports: [ 'xhr-polling', 'websocket' ]
+// }
+var http = require('http').CreateServer(app);
 var io = require('socket.io')(http);
 
-// set the port of our application
-// process.env.PORT lets the port be set by Heroku
-var port = process.env.PORT || 8080;
+http.listen(process.env.PORT || 3000)
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
