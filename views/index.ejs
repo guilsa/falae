@@ -86,11 +86,15 @@
 
     $('#username-modal').on('hide.bs.modal', function (e) {
       var getUserName = $('#username-modal #username').val();
+      var userParams = {};
+
       if ( getUserName === "" ){
         $('#username-form-error').toggleClass("hidden")
         e.preventDefault();
       } else {
-        loggedIn(getUserName);
+        userParams.id = socket.id;
+        userParams.name = getUserName;
+        userEnteredRoom(userParams);
       }
     });
 
@@ -122,9 +126,9 @@
       $('body').data("user-hash", userHash);
     });
 
-    function loggedIn(user){
-      socket.emit('add user', user);
-      socket.emit('chat message', "*" + user + " just signed in.");
+    function userEnteredRoom(userParams){
+      socket.emit('add user', userParams);
+      socket.emit('chat message', "*" + userParams.name + " has entered the room.");
      };
 
 </script>

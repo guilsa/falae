@@ -22,15 +22,16 @@ var users = [];
 io.on('connection', function(socket){
 
   socket.on('disconnect', function(e){
-    debugger
-    // console.log(socket);
-    // io.emit('new user', )
+    var new_id = this.id.slice(2, this.id.length);
+    var getUserName = users.filter(function(current_user) {
+      return current_user.id === new_id }
+    )[0].name
+    io.emit('chat message', "*" + getUserName + " has left the room.");
   });
 
   socket.on('add user', function(user){
     users.push(user);
     io.emit('auth user', users.indexOf(user));
-    console.log(users);
   });
   socket.on('chat message', function(msg){
 
