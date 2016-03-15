@@ -6,7 +6,7 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font: 13px Helvetica, Arial; }
     #form-input { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-    #form-input input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+    #form-input textarea { resize: none; height: 50px; border: 0; padding: 10px; width: 90%; margin-right: .5%; }
     #form-input button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
     #messages { list-style-type: none; margin: 0; padding: 0; }
     #messages li { padding: 5px 10px; }
@@ -21,6 +21,10 @@
   </style>
 </head>
 <body>
+
+  <!------------>
+  <!-- Modal  -->
+  <!------------>
 
   <div class="modal fade" id="username-modal" tabindex="-1" role="dialog">
     <div class="modal-dialog">
@@ -39,14 +43,22 @@
         <div class="modal-footer">
           <button type="button" id="username-modal-btn" class="btn btn-primary btn-lg" data-dismiss="modal">Ok</button>
         </div>
-      </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-  </div><!-- /.modal -->
+      </div>
+    </div>
+  </div>
 
+  <!------------>
+  <!--  Body  -->
+  <!------------>
   <h2 id="messages"></h2>
-  <form id="form-input" action="">
-    <input id="m" autocomplete="off" /><button class=".btn-primary">Send</button>
+  <form id="form-input" action="" autocomplete="off">
+    <textarea id="m"/></textarea><button class=".btn-primary">Send</button>
   </form>
+
+
+  <!------------->
+  <!--Javascript->
+  <!------------->
   <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
   <script src="https://code.jquery.com/jquery-2.2.1.min.js"   integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="   crossorigin="anonymous"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
@@ -64,6 +76,7 @@
     });
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
+      $('body').scrollTop($('body')[0].scrollHeight);
     });
 
     $('#username-modal').on('hide.bs.modal', function (e) {
