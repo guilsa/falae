@@ -5,22 +5,53 @@
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font: 13px Helvetica, Arial; }
-    form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
-    form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
-    form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+    #form-input { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+    #form-input input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+    #form-input button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
     #messages { list-style-type: none; margin: 0; padding: 0; }
     #messages li { padding: 5px 10px; }
     #messages li:nth-child(odd) { background: #eee; }
   </style>
+  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+  <style>
+* {
+   font-size: 30px;
+   line-height: 2;
+}
+  </style>
 </head>
 <body>
-  <ul id="messages"></ul>
-  <form action="">
-    <input id="m" automcomplete="off" /><button>Send</button>
+
+  <div class="modal fade" id="username-modal" tabindex="-1" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title">What's your name?</h2>
+        </div>
+        <div class="modal-body">
+          <form action="" class="form-group">
+            <input id="username" class="form-control input-lg" style="font-size: 30px;">
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="username-modal-btn" class="btn btn-primary btn-lg" data-dismiss="modal">Ok</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <h2 id="messages"></h2>
+  <form id="form-input" action="">
+    <input id="m" autocomplete="off" /><button class=".btn-primary">Send</button>
   </form>
   <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
-  <script   src="https://code.jquery.com/jquery-2.2.1.min.js"   integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="   crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-2.2.1.min.js"   integrity="sha256-gvQgAFzTH6trSrAWoH1iPo9Xc96QxSZ3feW6kem+O00="   crossorigin="anonymous"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   <script>
+    $('#username-modal-btn').click(function(){
+      username = $('#username-modal #username').val();
+    });
+    $('#username-modal').modal('show');
     var socket = io();
     $('form').submit(function(){
       send();
@@ -44,4 +75,5 @@
 
   </script>
 </body>
+
 </html>
