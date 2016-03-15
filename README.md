@@ -8,4 +8,4 @@ Objective is mainly to design a chat application and grow it's functionalities. 
 
 ## Ideas
 
-Phonegap support, decouple front/back-end, data persistence, yoda speak.
+React and phonegap support, decouple front/back-end, data persistence, yoda speak.
