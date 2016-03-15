@@ -1,7 +1,7 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Socket.IO chat</title>
+  <title>Guigui's chat</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font: 13px Helvetica, Arial; }
@@ -29,7 +29,7 @@
           <h2 class="modal-title">What's your name?</h2>
         </div>
         <div class="modal-body">
-          <form action="" class="form-group">
+          <form action="" class="form-group" id="username-form">
             <input id="username" class="form-control input-lg" style="font-size: 30px;">
           </form>
         </div>
@@ -49,12 +49,12 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   <script>
     $('#username-modal-btn').click(function(){
-      var getUserName = $('#username-modal #username').val();
-      $('body').data("user-name", getUserName);
+      $("#username-form").trigger("submit");
     });
+    $('#username-modal').modal({backdrop: 'static', keyboard: false});
     $('#username-modal').modal('show');
     var socket = io();
-    $('form').submit(function(){
+    $('#form-input').submit(function(){
       socket.emit('chat message', $('body').data("user-name") + ": " + $('#m').val());
       $('#m').val('');
       return false;
@@ -62,6 +62,21 @@
     socket.on('chat message', function(msg){
       $('#messages').append($('<li>').text(msg));
     });
+
+    $("#username-form").submit(function(e){
+      var getUserName = $('#username-modal #username').val();
+      $('body').data("user-name", getUserName);
+      e.preventDefault();
+    })
+
+    $('#username').keypress(function (e) {
+     var key = e.which;
+     if(key == 13) {
+       $("#username-form").trigger("submit");
+       $('#username-modal').modal('hide');
+       e.preventDefault();
+     }
+   })
 
     $('#m').keypress(function (e) {
      var key = e.which;
@@ -73,9 +88,7 @@
 
 });
 
-
-
-  </script>
+</script>
 </body>
 
 </html>
