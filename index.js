@@ -4,7 +4,7 @@ var path = require('path');
 // {
 //   transports: [ 'xhr-polling', 'websocket' ]
 // }
-var http = require('http').CreateServer(app);
+var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
 http.listen(process.env.PORT || 3000)
@@ -25,11 +25,3 @@ io.on('connection', function(socket){
     io.emit('chat message', msg);
   });
 });
-
-app.listen(port, function() {
-    console.log('app.listen - Our app is running on http://localhost:' + port);
-});
-
-http.listen(3000, function(){
-  console.log('http - listening on *:3000');
-})
