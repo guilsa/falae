@@ -49,12 +49,14 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
   <script>
     $('#username-modal-btn').click(function(){
-      username = $('#username-modal #username').val();
+      var getUserName = $('#username-modal #username').val();
+      $('body').data("user-name", getUserName);
     });
     $('#username-modal').modal('show');
     var socket = io();
     $('form').submit(function(){
-      send();
+      socket.emit('chat message', $('body').data("user-name") + ": " + $('#m').val());
+      $('#m').val('');
       return false;
     });
     socket.on('chat message', function(msg){
@@ -64,14 +66,14 @@
     $('#m').keypress(function (e) {
      var key = e.which;
      if(key == 13) {
-       send();
+       socket.emit('chat message', $('body').data("user-name") + ": " + $('#m').val());
+       $('#m').val('');
+       return false;
      }
+
 });
 
-    var send = function(){
-      socket.emit('chat message', $('#m').val());
-      $('#m').val('');
-    }
+
 
   </script>
 </body>
