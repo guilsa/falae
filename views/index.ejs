@@ -68,6 +68,7 @@
     });
     $('#username-modal').modal({backdrop: 'static', keyboard: false});
     $('#username-modal').modal('show');
+
     var socket = io();
     $('#form-input').submit(function(){
       socket.emit('chat message', $('body').data("user-name") + ": " + $('#m').val());
@@ -78,12 +79,18 @@
       $('#messages').append($('<li>').text(msg));
       $('body').scrollTop($('body')[0].scrollHeight);
     });
+    socket.on('new user', function(msg){
+      $('#messages').append($('<li>').text(msg));
+      $('body').scrollTop($('body')[0].scrollHeight);
+    });
 
     $('#username-modal').on('hide.bs.modal', function (e) {
       var getUserName = $('#username-modal #username').val();
       if ( getUserName === "" ){
         $('#username-form-error').toggleClass("hidden")
         e.preventDefault();
+      } else {
+        loggedIn(getUserName);
       }
     });
 
@@ -91,26 +98,34 @@
       var getUserName = $('#username-modal #username').val();
       $('body').data("user-name", getUserName);
       e.preventDefault();
-    })
+    });
 
     $('#username').keypress(function (e) {
-     var key = e.which;
-     if(key == 13) {
-       $("#username-form").trigger("submit");
-       $('#username-modal').modal('hide');
-       e.preventDefault();
-     }
-   })
+      var key = e.which;
+      if(key == 13) {
+        $("#username-form").trigger("submit");
+        $('#username-modal').modal('hide');
+        e.preventDefault();
+      }
+    });
 
     $('#m').keypress(function (e) {
-     var key = e.which;
-     if(key == 13) {
-       socket.emit('chat message', $('body').data("user-name") + ": " + $('#m').val());
-       $('#m').val('');
-       return false;
-     }
+      var key = e.which;
+      if(key == 13) {
+        socket.emit('chat message', $('body').data("user-name") + ": " + $('#m').val());
+        $('#m').val('');
+        return false;
+      };
+    });
 
-});
+    socket.on('auth user', function(userHash){
+      $('body').data("user-hash", userHash);
+    });
+
+    function loggedIn(user){
+      socket.emit('add user', user);
+      socket.emit('chat message', "*" + user + " just signed in.");
+     };
 
 </script>
 </body>

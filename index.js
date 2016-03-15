@@ -1,9 +1,6 @@
 var express = require('express');
 var app = express();
 var path = require('path');
-// {
-//   transports: [ 'xhr-polling', 'websocket' ]
-// }
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
 
@@ -20,8 +17,23 @@ app.get('/', function(req, res) {
     res.render('index');
 });
 
+var users = [];
+
 io.on('connection', function(socket){
+
+  socket.on('disconnect', function(e){
+    debugger
+    // console.log(socket);
+    // io.emit('new user', )
+  });
+
+  socket.on('add user', function(user){
+    users.push(user);
+    io.emit('auth user', users.indexOf(user));
+    console.log(users);
+  });
   socket.on('chat message', function(msg){
+
     io.emit('chat message', msg);
   });
 });
